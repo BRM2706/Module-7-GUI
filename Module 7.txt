@@ -1,0 +1,75 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
+public class UserRegistrationForm extends JFrame {
+    private JTextField nameField;
+    private JTextField emailField;
+    private JTextField passwordField;
+    private JTextField confirmPasswordField;
+
+    public UserRegistrationForm() {
+        super("User Registration");
+
+        JLabel nameLabel = new JLabel("Name:");
+        JLabel emailLabel = new JLabel("Email:");
+        JLabel passwordLabel = new JLabel("Password:");
+        JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
+
+        nameField = new JTextField(18);
+        emailField = new JTextField(18);
+        passwordField = new JTextField(18);
+        confirmPasswordField = new JTextField(18);
+
+        JButton submitButton = new JButton("Submit");
+        JButton clearButton  = new JButton("Clear");
+        JPanel main = new JPanel(new GridLayout(5, 2, 8, 8));
+        main.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+        main.add(nameLabel);
+        main.add(nameField);
+        main.add(emailLabel);
+        main.add(emailField);
+        main.add(passwordLabel);
+        main.add(passwordField);
+        main.add(confirmPasswordLabel);
+        main.add(confirmPasswordField);
+        main.add(submitButton);
+        main.add(clearButton);
+        submitButton.addActionListener(this::handleSubmit);
+        clearButton.addActionListener(e -> {
+            nameField.setText("");
+            emailField.setText("");
+            passwordField.setText("");
+            confirmPasswordField.setText("");
+            nameField.requestFocusInWindow();
+        });
+        setContentPane(main);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
+        setLocationRelativeTo(null);
+    }
+    private void handleSubmit(ActionEvent e) {
+        String name = nameField.getText().trim();
+        String email = emailField.getText().trim();
+        String pass = passwordField.getText().trim();
+        String confirm = confirmPasswordField.getText().trim();
+        if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please fill in all fields.",
+                    "Missing Information",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        String message = String.format(
+                "Name: %s%nEmail: %s%nPassword: %s%nConfirm Password: %s",
+                name, email, pass, confirm
+        );
+        JOptionPane.showMessageDialog(this, message, "Info Submitted", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new UserRegistrationForm().setVisible(true));
+    }
+}
